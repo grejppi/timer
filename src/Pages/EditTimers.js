@@ -34,6 +34,7 @@ export default function EditTimers({ timers, setTimers, close }) {
             }}
           >
             <span className="fas fa-times"></span>
+            <span className="hidden">Delete</span>
           </button>
           <div class="flex-grow"></div>
         </Timer>

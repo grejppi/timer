@@ -78,8 +78,14 @@ export default function CreateTimer({ close, start }) {
       <div className="flex-grow text-center pr-6">
         <TimerInputLabel digits={digits} />
       </div>
-      <button className="w-1/6" onClick={() => removeDigit()}><span className="fas fa-backspace"></span></button>
-      <button className="w-1/6" onClick={() => setDigits([])}><span className="fas fa-times"></span></button>
+      <button className="w-1/6" onClick={() => removeDigit()}>
+        <span className="fas fa-backspace"></span>
+        <span className="hidden">Backspace</span>
+      </button>
+      <button className="w-1/6" onClick={() => setDigits([])}>
+        <span className="fas fa-times"></span>
+        <span className="hidden">Clear</span>
+      </button>
     </div>
     <div className="InputPad flex flex-row flex-wrap container w-full justify-center">
       {[...'~'.repeat(10)].map((_, i) => {

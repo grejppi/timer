@@ -20,12 +20,16 @@ body {
     @apply text-4xl;
 }
 
+.Header button {
+    @apply text-3xl m-2 py-2 rounded-md shadow w-24 font-hairline;
+}
+
 .Header button:not(:disabled) {
-    @apply text-3xl m-2 px-6 py-2 rounded-md shadow bg-pink-600 text-pink-100;
+    @apply bg-pink-600 text-pink-100;
 }
 
 .Header button:disabled {
-    @apply text-3xl m-2 px-6 rounded-md shadow text-pink-300;
+    @apply text-pink-300;
 }
 
 .Page {

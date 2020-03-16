@@ -27,7 +27,7 @@ function formatTime(time) {
 export default function Timer({ state, runningState, onClick, updateCount, children }) {
   let _ = updateCount;
   return (
-    <div className="w-1/3 h-full py-4 flex justify-center">
+    <div className="w-1/3 h-full py-4 flex flex-col items-center justify-center">
       <div
         className="TimerBody relative w-24 h-24 overflow-none rounded-full border border-gray-700 hover:border-gray-600 select-none flex flex-col justify-center items-center"
         onClick={onClick}
