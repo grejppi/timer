@@ -4,6 +4,16 @@ import './CreateTimer.pcss';
 
 import TimerInputLabel from '../Components/TimerInputLabel';
 
+function digitsToMilliseconds(digits) {
+  let mapping = [1, 10, 60, 600, 3600, 36000];
+  let millis = 0;
+  for (let i in mapping) {
+    let di = digits.length - i - 1;
+    millis += (digits[di] ? digits[di] : 0) * mapping[i] * 1000;
+  }
+  return millis;
+}
+
 export default function CreateTimer({ close, start }) {
   let [digits, setDigits] = useState([]);
 
@@ -55,7 +65,8 @@ export default function CreateTimer({ close, start }) {
           <button
             className="text-3xl m-2 px-6 rounded-md shadow bg-pink-600 text-pink-100"
             onClick={() => {
-              (start ? start : () => { console.log("Started! c:") })();
+              let millis = digitsToMilliseconds(digits);
+              (start ? start : () => { console.log("Started! c: " + millis) })(millis);
               close && close();
             }}
           >
@@ -79,16 +90,11 @@ export default function CreateTimer({ close, start }) {
       <button className="w-1/6" onClick={() => setDigits([])}><span className="fas fa-times"></span></button>
     </div>
     <div className="InputPad flex flex-row flex-wrap container w-full justify-center">
-      <button onClick={() => addDigit(1)}>1</button>
-      <button onClick={() => addDigit(2)}>2</button>
-      <button onClick={() => addDigit(3)}>3</button>
-      <button onClick={() => addDigit(4)}>4</button>
-      <button onClick={() => addDigit(5)}>5</button>
-      <button onClick={() => addDigit(6)}>6</button>
-      <button onClick={() => addDigit(7)}>7</button>
-      <button onClick={() => addDigit(8)}>8</button>
-      <button onClick={() => addDigit(9)}>9</button>
-      <button onClick={() => addDigit(0)}>0</button>
-    </div>
+      {[...'~'.repeat(10)].map((_, i) => {
+        let digit = (i + 1) % 10;
+        return <React.Fragment key={i}>
+          <button onClick={() => addDigit(digit)}>{digit}</button>
+        </React.Fragment>;
+      })}</div>
   </div>;
 };

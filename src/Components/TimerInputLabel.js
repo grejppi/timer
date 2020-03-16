@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function TimerInputLabel({ digits }) {
-    return <span className="text-5xl md:text-6xl">
+    return <span className="text-5xl md:text-6xl font-hairline">
       {(() => {
         let chars = new Array();
         for (let digit of digits) {

@@ -1,32 +1,41 @@
 import React from 'react';
 
+import './Timer.pcss';
+
 function formatTime(time) {
   let seconds = Math.floor(time / 1000);
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
 
   if (seconds < 60) {
-    return <span className="text-4xl">
+    return <span className="text-4xl font-hairline">
       {`${seconds}s`}
     </span>;
   }
 
   if (seconds < 3600) {
-    return <span className="text-xl">
+    return <span className="text-xl font-thin">
       {`${minutes}m ${seconds % 60}s`}
     </span>;
   }
 
-  return <span className="text-base">
+  return <span className="text-base font-thin">
     {`${hours}h ${minutes % 60}m ${seconds % 60}s`}
   </span>;
 }
 
-export default function Timer({ state }) {
+export default function Timer({ state, runningState, onClick, updateCount, children }) {
+  let _ = updateCount;
   return (
-    <div className="w-1/3 h-full p-4 flex justify-center">
-      <div className="w-24 h-24 rounded-full border border-white flex flex-col justify-center items-center">
-        {formatTime(state.time - state.remaining)}
+    <div className="w-1/3 h-full py-4 flex justify-center">
+      <div
+        className="TimerBody w-24 h-24 overflow-none rounded-full border border-gray-700 hover:border-gray-600 select-none flex flex-col justify-center items-center"
+        onClick={onClick}
+      >
+        <div className="relative top-0 left-0">
+          {children}
+        </div>
+        {formatTime(state.time - state.elapsed - (runningState !== undefined ? (new Date().getTime() - runningState.started) : 0))}
       </div>
     </div>
   );
