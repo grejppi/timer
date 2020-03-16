@@ -29,13 +29,13 @@ export default function Timer({ state, runningState, onClick, updateCount, child
   return (
     <div className="w-1/3 h-full py-4 flex justify-center">
       <div
-        className="TimerBody w-24 h-24 overflow-none rounded-full border border-gray-700 hover:border-gray-600 select-none flex flex-col justify-center items-center"
+        className="TimerBody relative w-24 h-24 overflow-none rounded-full border border-gray-700 hover:border-gray-600 select-none flex flex-col justify-center items-center"
         onClick={onClick}
       >
-        <div className="relative top-0 left-0">
+        {formatTime(state.time - state.elapsed - (runningState !== undefined ? (new Date().getTime() - runningState.started) : 0))}
+        <div className="absolute bottom-0">
           {children}
         </div>
-        {formatTime(state.time - state.elapsed - (runningState !== undefined ? (new Date().getTime() - runningState.started) : 0))}
       </div>
     </div>
   );

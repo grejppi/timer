@@ -49,11 +49,10 @@ export default function CreateTimer({ close, start }) {
     return digits.length != 0;
   };
 
-  return <div className="container w-full xl:w-1/4 lg:w-1/3 md:w-1/2 mx-auto">
+  return <div className="Page container">
     <div className="Header">
       <header className="bg-pink-900 flex flex-row">
         <button
-          className="text-3xl m-2 px-6 py-2 rounded-md shadow bg-pink-600 text-pink-100"
           onClick={close ? close : () => { console.log("Closed! c:") }}
         >
           Back
@@ -63,7 +62,6 @@ export default function CreateTimer({ close, start }) {
 
         {isValid() &&
           <button
-            className="text-3xl m-2 px-6 rounded-md shadow bg-pink-600 text-pink-100"
             onClick={() => {
               let millis = digitsToMilliseconds(digits);
               (start ? start : () => { console.log("Started! c: " + millis) })(millis);
@@ -73,13 +71,7 @@ export default function CreateTimer({ close, start }) {
             Start
           </button>}
 
-        {!isValid() &&
-          <button
-            className="text-3xl m-2 px-6 rounded-md shadow text-pink-300"
-            disabled
-          >
-            Start
-          </button>}
+        {!isValid() && <button disabled>Start</button>}
       </header>
     </div>
     <div className="flex flex-row">

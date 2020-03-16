@@ -19,3 +19,33 @@ body {
 .Header h1 {
     @apply text-4xl;
 }
+
+.Header button:not(:disabled) {
+    @apply text-3xl m-2 px-6 py-2 rounded-md shadow bg-pink-600 text-pink-100;
+}
+
+.Header button:disabled {
+    @apply text-3xl m-2 px-6 rounded-md shadow text-pink-300;
+}
+
+.Page {
+    @apply w-full mx-auto;
+}
+
+@screen md {
+    .Page {
+        @apply w-1/2;
+    }
+}
+
+@screen lg {
+    .Page {
+        @apply w-1/3;
+    }
+}
+
+@screen xl {
+    .Page {
+        @apply w-1/4;
+    }
+}
