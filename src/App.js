@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import './App.pcss';
@@ -14,11 +14,27 @@ const Pages = {
 const App = () => {
   let [page, setPage] = useState(Pages.TimerList);
 
+  let [timers, setTimers] = useState(
+    localStorage.getItem('timers') ||
+    [
+      {
+        id: 1,
+        time: 100000000,
+        remaining: 0,
+      },
+    ],
+  );
+
+  let [running, setRunning] = useState({});
+
   return (
     <div>
       {page == Pages.TimerList &&
         <TimerList
           create={() => setPage(Pages.CreateTimer)}
+          timers={timers}
+          running={running}
+          setRunning={setRunning}
         />
       }
 
