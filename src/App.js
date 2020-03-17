@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import './App.pcss';
+const Alarm = require('../assets/Alarm.mp3');
 
 import TimerList from './Pages/TimerList';
 import CreateTimer from './Pages/CreateTimer';
@@ -22,6 +23,7 @@ const App = () => {
   let [running, setRunning] = useState({});
   let [intervalID, setIntervalID] = useState(undefined);
   let [updateCount, setUpdateCount] = useState(0);
+  let [alarms, setAlarms] = useState({});
   let [timers, setTimers] = useState(
     JSON.parse(localStorage.getItem('timers')) || [],
   );
@@ -39,6 +41,27 @@ const App = () => {
     localStorage.setItem('timers', JSON.stringify(newTimers));
   };
 
+  const toggleAlarm = (id) => {
+    let newAlarms = { ...alarms };
+
+    if (alarms[id] !== undefined) {
+      delete newAlarms[id];
+    } else {
+      newAlarms[id] = true;
+    }
+
+    let alarm = document.getElementById('Alarm');
+
+    if (Object.keys(newAlarms).length == 0) {
+      alarm.pause();
+      alarm.currentTime = 0;
+    } else {
+      alarm.play();
+    }
+
+    setAlarms(newAlarms);
+  };
+
   const toggleTimer = (id) => {
     let newRunning = { ...running };
 
@@ -52,6 +75,7 @@ const App = () => {
           timer.elapsed = timer.elapsed + new Date().getTime() - running[id].started;
           if (timer.elapsed > timer.time) {
             timer.elapsed = 0;
+            toggleAlarm(id);
           }
           break;
         }
@@ -70,11 +94,9 @@ const App = () => {
       newRunning[id] = {
         started: new Date().getTime(),
         timeoutID: time !== undefined && setTimeout(() => {
-          console.log("ALARM GOES HERE");
+          toggleAlarm(id);
         }, time),
       };
-
-      console.log(newRunning);
     }
 
     setRunning(newRunning);
@@ -114,6 +136,9 @@ const App = () => {
 
   return (
     <div>
+      <audio id="Alarm" loop>
+        <source src={Alarm} type="audio/mpeg" />
+      </audio>
       {page == Pages.TimerList &&
         <TimerList
           create={() => setPage(Pages.CreateTimer)}
