@@ -24,15 +24,21 @@ function formatTime(time) {
   </span>;
 }
 
-export default function Timer({ state, runningState, onClick, updateCount, children }) {
+export default function Timer({ state, runningState, onClick, onDoubleClick, updateCount, children }) {
   let _ = updateCount;
+
+  let remaining = state.time - state.elapsed - (runningState !== undefined ? (new Date().getTime() - runningState.started) : 0);
+
   return (
     <div className="w-1/3 h-full py-4 flex flex-col items-center justify-center">
       <div
-        className="TimerBody relative w-24 h-24 overflow-none rounded-full border border-gray-700 hover:border-gray-600 select-none flex flex-col justify-center items-center"
+        className={"TimerBody " + (
+          runningState !== undefined ? remaining < 0 ? "TimeUp" : "Running" : "Stopped"
+        )}
         onClick={onClick}
+        onDoubleClick={onDoubleClick}
       >
-        {formatTime(state.time - state.elapsed - (runningState !== undefined ? (new Date().getTime() - runningState.started) : 0))}
+        {formatTime(remaining)}
         <div className="absolute bottom-0">
           {children}
         </div>

@@ -13,6 +13,8 @@ const Pages = {
   EditTimers: 2,
 };
 
+const SessionID = new Date().getTime();
+
 const App = () => {
   let [page, setPage] = useState(Pages.TimerList);
 
@@ -38,7 +40,7 @@ const App = () => {
     localStorage.setItem('timers', JSON.stringify(newTimers));
   };
 
-  const setTimerState = (id) => {
+  const toggleTimer = (id) => {
     let newRunning = { ...running };
     if (running[id] !== undefined) {
       let newTimers = [ ...timers ];
@@ -49,6 +51,7 @@ const App = () => {
           if (timer.elapsed > timer.time) {
             timer.elapsed = 0;
           }
+          break;
         }
       }
       saveTimers(newTimers);
@@ -60,8 +63,22 @@ const App = () => {
     setRunning(newRunning);
   };
 
+  const resetTimer = (id) => {
+    let newTimers = [ ...timers ];
+    let newRunning = { ...running };
+    for (let timer of newTimers) {
+      if (timer.id === id) {
+        timer.elapsed = 0;
+        delete newRunning[id];
+        break;
+      }
+    }
+    saveTimers(newTimers);
+    setRunning(newRunning);
+  };
+
   const start = (time) => {
-    let id = new Date().getTime();
+    let id = `${SessionID}:${new Date().getTime()}`;
 
     let newTimers = [
       {
@@ -87,7 +104,8 @@ const App = () => {
           timers={timers}
           running={running}
           setRunning={setRunning}
-          setTimerState={setTimerState}
+          toggleTimer={toggleTimer}
+          resetTimer={resetTimer}
           updateCount={updateCount}
         />
       }
@@ -102,7 +120,9 @@ const App = () => {
       {page == Pages.EditTimers &&
         <EditTimers
           close={() => setPage(Pages.TimerList)}
+          commit={(newTimers) => { setTimers(newTimers) }}
           timers={timers}
+          newTimers={[ ...timers ]}
           setTimers={saveTimers}
         />
       }

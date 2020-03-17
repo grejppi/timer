@@ -1,0 +1,28 @@
+.TimerBody {
+    @apply relative w-24 h-24 overflow-hidden rounded-full border select-none flex flex-col justify-center items-center;
+}
+
+.TimerBody.Running {
+    @apply text-pink-300 border-pink-300;
+}
+
+.TimerBody.Running:hover {
+    @apply border-pink-200;
+}
+
+.TimerBody.Stopped {
+    @apply border-gray-700;
+}
+
+.TimerBody.Stopped:hover {
+    @apply border-gray-600;
+}
+
+.TimerBody.TimeUp {
+    @apply text-red-600 border-red-600;
+}
+
+.TimerBody.TimeUp:hover {
+    @apply text-red-600 border-red-500;
+}
+

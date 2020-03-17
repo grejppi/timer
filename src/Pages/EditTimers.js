@@ -1,22 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Timer from '../Components/Timer';
 
-export default function EditTimers({ timers, setTimers, close }) {
+export default function EditTimers({ timers, close, commit }) {
+  let [newTimers, setNewTimers] = useState(timers);
+
   return <div className="Page container">
     <div className="Header">
       <header className="bg-pink-900 flex flex-row">
         <button
           onClick={close ? close : () => console.log("Closed! c:")}
         >
+          Cancel
+        </button>
+
+        <div className="flex-grow"></div>
+
+        <button
+          onClick={() => {
+            (commit ? commit(newTimers) : console.log("Committed! c:"));
+            (close && close());
+          }}
+        >
           Done
         </button>
-        <div className="flex-grow"></div>
       </header>
     </div>
 
     <div className="flex flex-row flex-wrap container w-full">
-      {timers.map((timer, i) => <React.Fragment key={i}>
+      {newTimers.map((timer, i) => <React.Fragment key={i}>
         <Timer
           state={timer}
           onClick={() => {}}
@@ -24,12 +36,9 @@ export default function EditTimers({ timers, setTimers, close }) {
         >
           <button
             onClick={(ev) => {
-              let newTimers = [...timers];
-              newTimers.splice(i, 1);
-              setTimers(newTimers);
-              if (close !== undefined && newTimers.length == 0) {
-                close();
-              }
+              let newNewTimers = [...newTimers];
+              newNewTimers.splice(i, 1);
+              setNewTimers(newNewTimers);
               ev.stopPropagation();
             }}
           >

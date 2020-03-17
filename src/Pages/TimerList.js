@@ -2,7 +2,7 @@ import React from 'react';
 
 import Timer from '../Components/Timer';
 
-export default function TimerList({ create, edit, timers, running, setRunning, setTimerState, updateCount }) {
+export default function TimerList({ create, edit, timers, running, setRunning, toggleTimer, resetTimer, updateCount }) {
   const nothingIsRunning = Object.keys(running).length == 0;
 
   return <div className="Page container">
@@ -35,7 +35,8 @@ export default function TimerList({ create, edit, timers, running, setRunning, s
         <Timer
           state={timer}
           runningState={running[timer.id]}
-          onClick={() => setTimerState(timer.id)}
+          onClick={() => toggleTimer(timer.id)}
+          onDoubleClick={() => resetTimer(timer.id)}
           updateCount={!!running[timer.id] ? updateCount : 0}
         />
       </React.Fragment>)}
