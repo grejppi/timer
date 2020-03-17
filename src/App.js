@@ -7,6 +7,8 @@ import TimerList from './Pages/TimerList';
 import CreateTimer from './Pages/CreateTimer';
 import EditTimers from './Pages/EditTimers';
 
+import { formatTime } from './Components/Timer';
+
 const Pages = {
   TimerList: 0,
   CreateTimer: 1,
@@ -17,15 +19,12 @@ const SessionID = new Date().getTime();
 
 const App = () => {
   let [page, setPage] = useState(Pages.TimerList);
-
+  let [running, setRunning] = useState({});
+  let [intervalID, setIntervalID] = useState(undefined);
+  let [updateCount, setUpdateCount] = useState(0);
   let [timers, setTimers] = useState(
     JSON.parse(localStorage.getItem('timers')) || [],
   );
-
-  let [running, setRunning] = useState({});
-
-  let [intervalID, setIntervalID] = useState(undefined);
-  let [updateCount, setUpdateCount] = useState(0);
 
   useEffect(() => {
     if (intervalID === undefined) {
@@ -42,9 +41,12 @@ const App = () => {
 
   const toggleTimer = (id) => {
     let newRunning = { ...running };
+
     if (running[id] !== undefined) {
       let newTimers = [ ...timers ];
+      (newRunning[id].timeoutID && clearTimeout(newRunning[id].timeoutID));
       delete newRunning[id];
+
       for (let timer of newTimers) {
         if (timer.id === id) {
           timer.elapsed = timer.elapsed + new Date().getTime() - running[id].started;
@@ -56,10 +58,25 @@ const App = () => {
       }
       saveTimers(newTimers);
     } else {
+      const time = (() => {
+        for (let timer of timers) {
+          if (timer.id === id) {
+            return timer.time - timer.elapsed;
+          }
+        }
+        return undefined;
+      })();
+
       newRunning[id] = {
         started: new Date().getTime(),
+        timeoutID: time !== undefined && setTimeout(() => {
+          console.log("ALARM GOES HERE");
+        }, time),
       };
+
+      console.log(newRunning);
     }
+
     setRunning(newRunning);
   };
 

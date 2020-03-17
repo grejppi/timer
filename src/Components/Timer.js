@@ -2,27 +2,35 @@ import React from 'react';
 
 import './Timer.pcss';
 
-function formatTime(time) {
+export function formatTime(time) {
   let seconds = Math.floor(time / 1000);
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
 
   if (seconds < 60) {
-    return <span className="text-4xl font-hairline">
-      {`${seconds}s`}
-    </span>;
+    return {
+      className: 'text-4xl font-hairline',
+      text: `${seconds}s`,
+    };
   }
 
   if (seconds < 3600) {
-    return <span className="text-xl font-thin">
-      {`${minutes}m ${seconds % 60}s`}
-    </span>;
+    return {
+      className: 'text-xl font-thin',
+      text: `${minutes}m ${seconds % 60}s`,
+    };
   }
 
-  return <span className="text-base font-thin">
-    {`${hours}h ${minutes % 60}m ${seconds % 60}s`}
-  </span>;
+  return {
+    className: 'text-base font-thin',
+    text: `${hours}h ${minutes % 60}m ${seconds % 60}s`,
+  };
 }
+
+function formatTimeInternal(time) {
+  let { className, text } = formatTime(time);
+  return <span className={className}>{text}</span>;
+};
 
 export default function Timer({ state, runningState, onClick, onDoubleClick, updateCount, children }) {
   let _ = updateCount;
@@ -38,7 +46,7 @@ export default function Timer({ state, runningState, onClick, onDoubleClick, upd
         onClick={onClick}
         onDoubleClick={onDoubleClick}
       >
-        {formatTime(remaining)}
+        {formatTimeInternal(remaining)}
         <div className="absolute bottom-0">
           {children}
         </div>
