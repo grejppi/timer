@@ -41,24 +41,26 @@ const App = () => {
   };
 
   const toggleAlarm = (id) => {
-    let newAlarms = { ...alarms };
+    setAlarms((alarms) => {
+      let newAlarms = { ...alarms };
 
-    if (alarms[id] !== undefined) {
-      delete newAlarms[id];
-    } else {
-      newAlarms[id] = true;
-    }
+      if (alarms[id] !== undefined) {
+        delete newAlarms[id];
+      } else {
+        newAlarms[id] = true;
+      }
 
-    let alarm = document.getElementById('Alarm');
+      let alarm = document.getElementById('Alarm');
 
-    if (Object.keys(newAlarms).length == 0) {
-      alarm.pause();
-      alarm.currentTime = 0;
-    } else {
-      alarm.play();
-    }
+      if (Object.keys(newAlarms).length == 0) {
+        alarm.pause();
+        alarm.currentTime = 0;
+      } else {
+        alarm.play();
+      }
 
-    setAlarms(newAlarms);
+      return newAlarms;
+    });
   };
 
   const initAlarm = () => {
