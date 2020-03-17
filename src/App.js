@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import './App.pcss';
-const Alarm = require('../assets/Alarm.mp3');
 
 import TimerList from './Pages/TimerList';
 import CreateTimer from './Pages/CreateTimer';
@@ -64,6 +63,18 @@ const App = () => {
 
   const toggleTimer = (id) => {
     let newRunning = { ...running };
+
+    let alarm = document.getElementById('Alarm');
+    if (alarm.src === '') {
+      alarm.src = require('../assets/Empty.wav');
+      alarm.play();
+      alarm.pause();
+      alarm.currentTime = 0;
+      alarm.src = require('../assets/Alarm.mp3');
+      alarm.loop = true;
+    }
+
+    console.log(alarm.src);
 
     if (running[id] !== undefined) {
       let newTimers = [ ...timers ];
@@ -136,9 +147,7 @@ const App = () => {
 
   return (
     <div>
-      <audio id="Alarm" loop>
-        <source src={Alarm} type="audio/mpeg" />
-      </audio>
+      <audio id="Alarm"></audio>
       {page == Pages.TimerList &&
         <TimerList
           create={() => setPage(Pages.CreateTimer)}
