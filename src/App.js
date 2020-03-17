@@ -64,13 +64,11 @@ const App = () => {
   const initAlarm = () => {
     let alarm = document.getElementById('Alarm');
     if (alarm.src === '') {
-      alarm.src = require('../assets/Empty.wav');
+      alarm.src = require('../assets/Alarm.mp3');
       alarm.play();
       alarm.pause();
       alarm.currentTime = 0;
-      alarm.src = require('../assets/Alarm.mp3');
       alarm.loop = true;
-      console.log('set to ' + alarm.src);
     }
   };
 
