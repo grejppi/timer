@@ -176,7 +176,7 @@ const App = () => {
       {page == Pages.EditTimers &&
         <EditTimers
           close={() => setPage(Pages.TimerList)}
-          commit={(newTimers) => { setTimers(newTimers) }}
+          commit={(newTimers) => { saveTimers(newTimers) }}
           timers={timers}
           newTimers={[ ...timers ]}
           setTimers={saveTimers}
