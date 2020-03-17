@@ -61,9 +61,7 @@ const App = () => {
     setAlarms(newAlarms);
   };
 
-  const toggleTimer = (id) => {
-    let newRunning = { ...running };
-
+  const initAlarm = () => {
     let alarm = document.getElementById('Alarm');
     if (alarm.src === '') {
       alarm.src = require('../assets/Empty.wav');
@@ -72,9 +70,21 @@ const App = () => {
       alarm.currentTime = 0;
       alarm.src = require('../assets/Alarm.mp3');
       alarm.loop = true;
+      console.log('set to ' + alarm.src);
     }
+  };
 
-    console.log(alarm.src);
+  const initRunningTimer = (id, time) => {
+    return {
+      started: new Date().getTime(),
+      timeoutID: time !== undefined && setTimeout(() => {
+        toggleAlarm(id);
+      }, time),
+    };
+  };
+
+  const toggleTimer = (id) => {
+    let newRunning = { ...running };
 
     if (running[id] !== undefined) {
       let newTimers = [ ...timers ];
@@ -102,12 +112,7 @@ const App = () => {
         return undefined;
       })();
 
-      newRunning[id] = {
-        started: new Date().getTime(),
-        timeoutID: time !== undefined && setTimeout(() => {
-          toggleAlarm(id);
-        }, time),
-      };
+      newRunning[id] = initRunningTimer(id, time);
     }
 
     setRunning(newRunning);
@@ -141,12 +146,12 @@ const App = () => {
     saveTimers(newTimers);
 
     let newRunning = { ...running };
-    newRunning[id] = { started: new Date().getTime() };
+    newRunning[id] = initRunningTimer(id, time);
     setRunning(newRunning);
   };
 
   return (
-    <div>
+    <div onClick={() => initAlarm()}>
       <audio id="Alarm"></audio>
       {page == Pages.TimerList &&
         <TimerList
